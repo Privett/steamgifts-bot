@@ -1,5 +1,5 @@
 # SteamGifts-Bot
-* Bot Version 1.0.0
+* Bot Version 1.0.2
 ## Bot launch
 * We go to the site [SteamGifts](https://www.steamgifts.com/)
 * Open the element code

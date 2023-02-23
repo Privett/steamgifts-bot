@@ -3,7 +3,8 @@
   "user": [
     {
       "UserName": "",
-      "UserCookies": true
+      "UserCookies": "",
+      "UserAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.215 Safari/535.1"
     }
   ]
 }

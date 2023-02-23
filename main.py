@@ -14,8 +14,9 @@ import threading
 from requests import RequestException
 import requests
 from bs4 import BeautifulSoup
+from fake_user import fa
 
-if read('main.json')['user'][0]['UserCookies'] == True:
+if read('main.json')['user'][0]['UserCookies'] == "":
     cook = input('Please Send PHPSESSID Cookies : ')
 
     man = {
@@ -31,9 +32,11 @@ if read('main.json')['user'][0]['UserCookies'] == True:
 
     write(man, 'main.json')
 
+header = {"user-agent": fa}
+
 cc = {'PHPSESSID': read('main.json')['user'][0]['UserCookies']}
 http = read('main.json')['ste']
-rss = requests.get(read('main.json')['ste'], cookies=cc)
+rss = requests.get(read('main.json')['ste'], cookies=cc, headers=header)
 html = BeautifulSoup(rss.text, 'lxml')
 
 user_name = html.find("a", {"class": "nav__avatar-outer-wrap"})['href']
@@ -62,7 +65,7 @@ def get_soup_from_page(url):
     global cookies 
 
     cookies = {'PHPSESSID': cook}
-    r = requests.get(url, cookies=cookies)
+    r = requests.get(url, cookies=cookies, headers=header)
     soup = BeautifulSoup(r.text, 'lxml')
 
     return soup
@@ -145,7 +148,7 @@ def get_games():
 
 def entry_gift(code):
     payload = {'xsrf_token': xsrf_token, 'do': 'entry_insert', 'code': code}
-    entry = requests.post('https://www.steamgifts.com/ajax.php', data=payload, cookies=cookies)
+    entry = requests.post('https://www.steamgifts.com/ajax.php', data=payload, cookies=cookies, headers=header)
     json_data = json.loads(entry.text)
 
     get_page()
