@@ -6,3 +6,5 @@
 * There we are looking for the Application tab
 * Go to Cookies and find PHPSESSID there
 * we take the value from PHPSESSID and enter it into the bot
+##
+* write your proposals on what can be added to the program [TGBot](https://t.me/privets_sp_bot)
