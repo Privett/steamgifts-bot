@@ -1,10 +1,9 @@
 # SteamGifts-Bot
-* Bot Version 1.0.2
+* Bot Version 1.0.3
+![](img.png)
 ## Bot launch
 * We go to the site [SteamGifts](https://www.steamgifts.com/)
 * Open the element code
 * There we are looking for the Application tab
 * Go to Cookies and find PHPSESSID there
 * we take the value from PHPSESSID and enter it into the bot
-##
-* write your proposals on what can be added to the program [TGBot](https://t.me/privets_sp_bot)
