@@ -1,0 +1,13 @@
+{
+  "link": "www.steamgifts.com",
+  "https": "https://",
+  "http": "http://",
+  "proxy": "one",
+  "user": [
+    {
+      "point_save": "0",
+      "PHPSESSID": "",
+      "fake_user": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.215 Safari/535.1"
+    }
+  ]
+}

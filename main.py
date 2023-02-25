@@ -10,33 +10,212 @@ from rich.panel import Panel
 from rich.text import Text
 
 import time
+import random
 import threading
 from requests import RequestException
 import requests
 from bs4 import BeautifulSoup
 from fake_user import fa
 
-if read('main.json')['user'][0]['UserCookies'] == "":
+while True:
+    inpt = input(' : ')
+
+# Setings
+
+    if inpt == ('help' or 'Help'):
+        os.system("cls")
+        help_com = f'seting : Settings \nstats : Your Statistics \nstart : Launch Bot'
+        print(Panel(help_com, title='Help'), "\n")
+
+    elif inpt == ('stats' or 'Stats'):
+        if read('settings.json')['user'][0]['PHPSESSID'] == "":
+            os.system("cls")
+            print('Please go to seting, cookies and set cookies')
+
+        else:
+            os.system("cls")
+            if read('settings.json')['user'][0]['fake_user'] == ('random' or 'Random'):
+                header = {"user-agent": fa}
+            else:
+                header = {"user-agent": read('settings.json')['user'][0]['fake_user']}
+
+            proxie_inp = read('settings.json')['proxy']
+            if proxie_inp == ('one' or 'One'):
+                proxie = read('proxies.json')['proxies'][0]['proxie']
+                proxie = {'http': f"http://{proxie}"}
+            elif proxie_inp == ('all' or 'All'):
+                proxie = read('proxies.json')['proxies'][random.randint(0, 836)]['proxie']
+                proxie = {'http': f"http://{proxie}"}
+        
+            cooki = {'PHPSESSID': read('settings.json')['user'][0]['PHPSESSID']}
+            link = read('settings.json')['https'] + read('settings.json')['link']
+            r = requests.get(link, cookies=cooki, headers=header, proxies=proxie)
+            html = BeautifulSoup(r.text, 'lxml')
+
+            user_name = html.find("a", {"class": "nav__avatar-outer-wrap"})['href']
+            user_name = user_name.removeprefix('/user/')
+
+            points = html.find('span', {'class': 'nav__points'}).text
+
+            won_game = html.find("div", {"class": "nav__notification fade_infinite"})
+
+            if won_game == None:
+                won_game = 0
+            else:
+                won_game = won_game.text
+        
+            mess = f'Name : {user_name} \nPoint : {points} \nGame Won : {won_game}'
+            print(Panel(mess, title='Version : 1.0.3'))
+
+    elif inpt == ('seting' or 'Seting'):
+        seting_com = f'cookies : Change Cookies \nproxy : Use Proxy \nusag : user-agent \nsave : Point Save \nexit, leave : Exit settings'
+        while True:
+            os.system("cls")
+            print(Panel(seting_com, title=f'Seting'), "\n")
+            inpt = input(' : ')
+            if inpt == ('save' or 'Save'):
+                inpt = input('Point Save : ')
+
+                with open('settings.json') as f:
+                    point_int = json.load(f)
+                point_int['user'][0]['point_save'] = inpt
+
+                write(point_int, 'settings.json')
+
+                if inpt == ('exit' or 'Exit' ) or ( 'leave' or 'Leave'):
+                    os.system("cls")
+                    print(f'You are out of Cookie settings.', '\n')
+
+            elif inpt == ('cookies' or 'Cookies'):
+                os.system("cls")
+                print(Panel(f'rewrite : Change Cookies \nexit, leave: Leave as it was', title='Cookies'), "\n")
+                inpt = input(' : ')
+                if inpt == ('rewrite' or 'Rewrite'):
+                    os.system("cls")
+                    inpt = input('Enter New PHPSESSID Cookie : ')
+
+                    with open('settings.json') as f:
+                        cookie = json.load(f)
+                    cookie['user'][0]['PHPSESSID'] = inpt
+
+                    write(cookie, 'settings.json')
+                    os.system("cls")
+
+                elif inpt == ('exit' or 'Exit' ) or ( 'leave' or 'Leave'):
+                    os.system("cls")
+                    print(f'You are out of Cookie settings.', '\n')
+                    
+                else:
+                    os.system("cls")
+                    print(f'Sorry, there is no such command.', '\n')
+
+            elif inpt == ('proxy' or 'Proxy'):
+                os.system("cls")
+                print(Panel(f'rewrite : Change Proxy \nexit, leave: Leave as it was', title='Proxy'), '\n')
+                inpt = input(' : ')
+                if inpt == ('rewrite' or 'Rewrite'):
+                    while True:
+                        os.system("cls")
+                        inpt = input('Use one or all proxies : ')
+                    
+                        if inpt == ('one' or 'One'):
+                            with open('settings.json') as f:
+                                proxy = json.load(f)
+                            proxy['proxy'] = inpt
+
+                            write(proxy, 'settings.json')
+                            os.system("cls")
+                            break
+                        elif inpt == ('all' or 'All'):
+                            with open('settings.json') as f:
+                                proxy = json.load(f)
+                            proxy['proxy'] = inpt
+
+                            write(proxy, 'settings.json')
+                            os.system("cls")
+                            break
+                        elif inpt == ('exit' or 'Exit' ) or ( 'leave' or 'Leave'):
+                            os.system("cls")
+                            print(f'You are out of settings.', '\n')
+                            break
+                        else:
+                            os.system("cls")
+                            print(f"I asked you to do it right, otherwise the program won't work.", '\n')
+
+                elif inpt == ('exit' or 'Exit' ) or ( 'leave' or 'Leave'):
+                    os.system("cls")
+                    print(f'You are out of Proxy settings.', '\n')
+                    
+                else:
+                    os.system("cls")
+                    print(f'Sorry, there is no such command.', '\n')
+
+            elif inpt == ('usag' or 'Usag'):
+                os.system("cls")
+                print(Panel(f'rewrite : Change User Agent \nexit, leave: Leave as it was', title='User Agent'), '\n')
+                inpt = input(' : ')
+                if inpt == ('rewrite' or 'Rewrite'):
+                    os.system("cls")
+                    print(Panel(f'Either randomly, or your own but not 2 letters, otherwise they can ban'), '\n')
+                    inpt = input("Enter User-Agent : ")
+                    
+                    with open('settings.json') as f:
+                        fake_user = json.load(f)
+                    fake_user['user'][0]['fake_user'] = inpt
+
+                    write(fake_user, 'settings.json')
+                    os.system("cls")
+
+                elif inpt == ('exit' or 'Exit' ) or ( 'leave' or 'Leave'):
+                    os.system("cls")
+                    print(f'You are out of User-Agent settings.', '\n')
+                    
+                else:
+                    os.system("cls")
+                    print(f'Sorry, there is no such command.', '\n')
+
+            elif inpt == ('exit' or 'Exit' ) or ( 'leave' or 'Leave'):
+                os.system("cls")
+                print(f'You are out of settings.', '\n')
+                break
+            else:
+                os.system("cls")
+                print(f'Sorry, there is no such command.', '\n')
+
+    elif inpt == ('start' or 'Start'):
+        os.system("cls")
+        break
+    else:
+        os.system("cls")
+        print(f'Sorry, there is no such command.', '\n')
+
+if read('settings.json')['user'][0]['PHPSESSID'] == "":
     cook = input('Please Send PHPSESSID Cookies : ')
 
-    man = {
-        "ste": "https://www.steamgifts.com/",
-        "user": []
-    }
-    user = {
-        "UserName": "",
-        "UserCookies": cook
-    }
+    with open('settings.json') as f:
+        cookie = json.load(f)
+    cookie['user'][0]['PHPSESSID'] = cook
 
-    man["user"].append(user)
+    write(cookie, 'settings.json')
 
-    write(man, 'main.json')
+point = read('settings.json')['user'][0]['point_save']
 
-header = {"user-agent": fa}
+if read('settings.json')['user'][0]['fake_user'] == ('random' or 'Random'):
+    header = {"user-agent": fa}
+else:
+    header = {"user-agent": read('settings.json')['user'][0]['fake_user']}
 
-cc = {'PHPSESSID': read('main.json')['user'][0]['UserCookies']}
-http = read('main.json')['ste']
-rss = requests.get(read('main.json')['ste'], cookies=cc, headers=header)
+proxie_inp = read('settings.json')['proxy']
+if proxie_inp == ('one' or 'One'):
+    proxie = read('proxies.json')['proxies'][0]['proxie']
+    proxie = {'http': f"http://{proxie}"}
+elif proxie_inp == ('all' or 'All'):
+    proxie = read('proxies.json')['proxies'][random.randint(0, 836)]['proxie']
+    proxie = {'http': f"http://{proxie}"}
+
+cc = {'PHPSESSID': read('settings.json')['user'][0]['PHPSESSID']}
+link = read('settings.json')['https'] + read('settings.json')['link']
+rss = requests.get(link, cookies=cc, headers=header, proxies=proxie)
 html = BeautifulSoup(rss.text, 'lxml')
 
 user_name = html.find("a", {"class": "nav__avatar-outer-wrap"})['href']
@@ -51,11 +230,9 @@ if won_game == None:
 else:
     won_game = won_game.text
 
-print(Panel('Version : 1.0.1' '\n' f'Name : {user_name}' '\n' f'Point : {points}' '\n' f'Game Won : {won_game}'))
+print(Panel('Version : 1.0.3' '\n' f'Name : {user_name}' '\n' f'Point : {points}' '\n' f'Game Won : {won_game}'))
 
-point = input('point save : ')
-
-cook = read('main.json')['user'][0]['UserCookies']
+cook = read('settings.json')['user'][0]['PHPSESSID']
 
 timeout = 900
 pages = 1
@@ -65,7 +242,7 @@ def get_soup_from_page(url):
     global cookies 
 
     cookies = {'PHPSESSID': cook}
-    r = requests.get(url, cookies=cookies, headers=header)
+    r = requests.get(url, cookies=cookies, headers=header, proxies=proxie)
     soup = BeautifulSoup(r.text, 'lxml')
 
     return soup
@@ -83,13 +260,13 @@ def get_page():
     global xsrf_token, points 
 
     if int(points) <= int(point):
-        print(Panel('Version : 1.0.1' '\n' f'Name : {user_name}' '\n' f'Point : {points}' '\n' f'Game Won : {won_game}'))
+        print(Panel('Version : 1.0.3' '\n' f'Name : {user_name}' '\n' f'Point : {points}' '\n' f'Game Won : {won_game}'))
         print('Not point bot stoped')
         time.sleep(1)
         os.system("cls")
         get_page()
 
-    soup = get_soup_from_page(read('main.json')['ste'])
+    soup = get_soup_from_page(read('settings.json')['https'] + read('settings.json')['link'])
 
     xsrf_token = soup.find('input', {'name': 'xsrf_token'})['value']
     points = soup.find('span', {'class': 'nav__points'}).text  # storage points
@@ -133,7 +310,7 @@ def get_games():
                     entry_gift(item.find('a', {'class': 'giveaway__heading__name'})['href'].split('/')[2])
                 if time.sleep(2):
                     os.system("cls")
-                    print(Panel('Version : 1.0.1' '\n' f'Name : {user_name}' '\n' f'Point : {points}' '\n' f'Game Won : {won_game}'))
+                    print(Panel('Version : 1.0.3' '\n' f'Name : {user_name}' '\n' f'Point : {points}' '\n' f'Game Won : {won_game}'))
 
                 
             n = n+1
@@ -148,7 +325,7 @@ def get_games():
 
 def entry_gift(code):
     payload = {'xsrf_token': xsrf_token, 'do': 'entry_insert', 'code': code}
-    entry = requests.post('https://www.steamgifts.com/ajax.php', data=payload, cookies=cookies, headers=header)
+    entry = requests.post('https://www.steamgifts.com/ajax.php', data=payload, cookies=cookies, headers=header, proxies=proxie)
     json_data = json.loads(entry.text)
 
     get_page()
