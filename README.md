@@ -1,9 +1,6 @@
 # SteamGifts-Bot
-* Bot Version 1.0.4
+* Bot Version 1.0.5
 
-![](img/img1.png)
-![](img/img2.png)
-![](img/img3.png)
 ## Bot launch
 * We go to the site [SteamGifts](https://www.steamgifts.com/)
 * Open the element code
