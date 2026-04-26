@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import time
 import os
 
-cookies = {}
+cookies = {"PHPSESSID": ""}
 headler={}
 
 timeout = 900
