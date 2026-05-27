@@ -1,5 +1,5 @@
 # SteamGifts-Bot
-* Bot Version 1.0.5
+* Bot Version 1.0.6
 
 ## Bot launch
 * We go to the site [SteamGifts](https://www.steamgifts.com/)
