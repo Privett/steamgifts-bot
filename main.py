@@ -14,7 +14,6 @@ import sys
 import typer
 
 import platform
-import webbrowser
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(base_path)
@@ -35,7 +34,6 @@ def create_config_file():
     global data_write
     data_write = {
         "Default": {"PHPSESSID": None, "filter_url": None, "ignored_filter": ""},
-        "Send2Me": {"telegram_bot": False, "discord_bot": False, "discord_webhook": False},
         "Discord": {"webhook": None, "token": None, "chat_id": 0, "user_id": 0},
         "Telegram": {"token": None, "user_id": 0}
     }
@@ -75,7 +73,6 @@ def create_config_file():
 def load_file_data():
     data_write_type = {
         "Default": {"PHPSESSID": str, "filter_url": str, "ignored_filter": str},
-        "Send2Me": {"telegram_bot": bool, "discord_bot": bool, "discord_webhook": bool},
         "Discord": {"webhook": str, "token": str, "chat_id": int, "user_id": int},
         "Telegram": {"token": str, "user_id": int}
     }
@@ -322,7 +319,7 @@ def cli():
     while True:
         browses = inquirer.select(
             message="Main Menu:",
-            choices=Choice2lower(["Start", "Settings", "Test"]),
+            choices=Choice2lower(["Start", "Settings"]),
             keybindings=nav["keys"]["select"],
             instruction=nav["instruction"]["select"],
             mandatory=False
