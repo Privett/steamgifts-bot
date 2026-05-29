@@ -204,7 +204,8 @@ def get_games():
                 game_heads_name = game_heads.find("a", {"class": "giveaway__heading__name"})
                 game_code = game_heads_name["href"].split("/")[2]
                 game_name = game_heads_name.text
-                if all(word.lower() in game_name.lower() for word in ignored_filter):
+                if any(word.lower() in game_name.lower() for word in ignored_filter):
+                    print(f"❌ Ignored: {game_name}")
                     continue
                 
                 for i in game_heads.find_all("span", {"class": "giveaway__heading__thin"}):
