@@ -193,7 +193,7 @@ def get_games():
         soup = get_data(default_data["filter_url"] % page)
 
         try:
-            for game in soup.find_all(lambda tag: tag.name == 'div' and tag.get('class') == ['giveaway__row-inner-wrap']):
+            for game in soup.find_all(lambda tag: tag.name == 'div' and 'giveaway__row-inner-wrap' in tag.get('class', []) and "is-faded" not in tag.get('class', [])):
                 if point < 6:
                     os.system("cls")
                     print('😴 Sleeping to get 6 points')
